@@ -1,6 +1,6 @@
 <template>
   <UIHeader />
-  <main class="flex flex-col flex-1 p-3">
+  <main class="flex flex-col flex-1">
     <NuxtPage />
   </main>
   <UIFooter />
