@@ -1,3 +1,9 @@
+<script setup>
+  useHead({
+    title: 'Тузик | Магазин для вашего питомца!'
+  })
+</script>
+
 <template>
   <section
     class="container relative mx-auto flex justify-between items-center min-h-[420px] overflow-hidden max-h-[500px] w-full pl-3">

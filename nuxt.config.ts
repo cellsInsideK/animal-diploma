@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     ],
   },
 
-  modules: ["@nuxt/fonts"],
+  modules: ["@nuxt/fonts", 'shadcn-nuxt', '@pinia/nuxt', '@nuxtjs/supabase'],
 
   router: {
     options: {
@@ -21,5 +21,16 @@ export default defineNuxtConfig({
 
   fonts: {
     families: [{name: 'Montserrat', provider: 'google', display: 'swap'}]
-  }
+  },
+
+  shadcn: {
+    prefix: '',
+    componentDir: './components/ui'
+  },
+
+  supabase: {
+    redirect: false,
+    url: process.env.SUPABASE_URL,
+    key: process.env.SUPABASE_KEY,
+  },
 });
