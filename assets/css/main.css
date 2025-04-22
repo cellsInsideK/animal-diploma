@@ -5,6 +5,8 @@
 
 @theme {
   --color-ui-primary: rgb(31, 96, 217);
+  --color-ui-success: rgb(121, 217, 31);
+  --color-ui-danger: rgb(250, 47, 47);
 }
 
 @theme inline {

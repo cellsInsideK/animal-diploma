@@ -1,4 +1,15 @@
+<script setup lang="ts">
+  import { Toaster } from './components/ui/sonner';
+  import type { SelectUsers } from './server/database/schema';
+
+  const userStore = useUserStore();
+
+  const res = await $fetch('/api/session');
+  userStore.user = res as SelectUsers;
+</script>
+
 <template>
+  <Toaster />
   <UIHeader />
   <main class="flex flex-col flex-1">
     <NuxtPage />

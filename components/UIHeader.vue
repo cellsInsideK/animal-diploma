@@ -1,13 +1,52 @@
 <script setup lang="ts">
   import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+  import UIRegisterModal from './modals/UIRegisterModal.vue';
+  import LoginModal from './modals/LoginModal.vue';
+
+  const userStore = useUserStore();
+  const registerVisible = ref(false);
+  const loginVisible = ref(false);
+
+  const openRegister = () => {
+    registerVisible.value = true;
+  }
+
+  const openLogin = () => {
+    loginVisible.value = true;
+  }
 </script>
 
 <template>
+  <UIRegisterModal v-model:is-visible="registerVisible" />
+  <LoginModal v-model:is-visible="loginVisible" />
   <header class="bg-ui-primary p-6">
     <div class="container mx-auto">
       <div class="flex gap-4 items-center justify-between">
-        <img src="/logo.svg" class="" alt="">
-        <img src="/burger.svg" class="block md:hidden" alt="">
+        <NuxtLink to="/">
+          <img src="/logo.svg" class="" alt="">
+        </NuxtLink>
+        <Popover>
+          <PopoverTrigger>
+            <img src="/burger.svg" class="block md:hidden" alt="">
+          </PopoverTrigger>
+          <PopoverContent>
+            <div class="flex flex-col gap-4 text-lg">
+              <NuxtLink class="!no-underline py-1" to="/">Главная</NuxtLink>
+              <NuxtLink class="!no-underline py-1" to="/services">Услуги
+              </NuxtLink>
+              <NuxtLink class="!no-underline py-1" to="/products">Товары
+              </NuxtLink>
+              <template v-if="!userStore.isAuthenticated">
+                <button class="w-fit py-1" @click="openLogin">Вход</button>
+                <button class="w-fit py-1" @click="openRegister">Регистрация</button>
+              </template>
+              <template v-else>
+                <button class="w-fit py-1" @click="userStore.logout">Выйти</button>
+              </template>
+              <NuxtLink class="!no-underline py-1" to="/delivery">Заказы</NuxtLink>
+            </div>
+          </PopoverContent>
+        </Popover>
         <nav class="hidden md:flex gap-12 text-base lg:text-lg">
           <NuxtLink class="text-white font-extrabold" to="/">Главная</NuxtLink>
           <NuxtLink class="text-white font-extrabold" to="/services">Услуги
@@ -15,7 +54,7 @@
           <NuxtLink class="text-white font-extrabold" to="/products">Товары
           </NuxtLink>
 
-          <Popover>
+          <Popover v-if="!userStore.isAuthenticated">
             <PopoverTrigger class="cursor-pointer">
               <div class="flex gap-9">
                 <p class="text-white font-extrabold">Вход</p>
@@ -23,13 +62,14 @@
               </div>
             </PopoverTrigger>
             <PopoverContent class="flex flex-col gap-4 w-fit p-4 font-extrabold">
-              <button class=" cursor-pointer">Вход</button>
-              <button class=" cursor-pointer">Регистрация</button>
+              <button class=" cursor-pointer" @click="openLogin">Вход</button>
+              <button class=" cursor-pointer" @click="openRegister">Регистрация</button>
             </PopoverContent>
           </Popover>
 
-          <NuxtLink class="text-white font-extrabold" to="/delivery">Заказы
-          </NuxtLink>
+          <button v-else class="text-white font-extrabold cursor-pointer" @click="userStore.logout">Выйти</button>
+          <NuxtLink v-if="!userStore.user?.isAdmin" class="text-white font-extrabold" to="/delivery">Заказы</NuxtLink>
+          <NuxtLink v-else class="text-white font-extrabold" to="/admin">Админ панель</NuxtLink>
         </nav>
       </div>
       <div class="flex items-center gap-4 mt-5">
