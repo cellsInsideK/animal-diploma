@@ -54,22 +54,24 @@
           <NuxtLink class="text-white font-extrabold" to="/products">Товары
           </NuxtLink>
 
-          <Popover v-if="!userStore.isAuthenticated">
-            <PopoverTrigger class="cursor-pointer">
-              <div class="flex gap-9">
-                <p class="text-white font-extrabold">Вход</p>
-                <img src="/arrow.svg" alt="">
-              </div>
-            </PopoverTrigger>
-            <PopoverContent class="flex flex-col gap-4 w-fit p-4 font-extrabold">
-              <button class=" cursor-pointer" @click="openLogin">Вход</button>
-              <button class=" cursor-pointer" @click="openRegister">Регистрация</button>
-            </PopoverContent>
-          </Popover>
+          <ClientOnly>
+            <Popover v-if="!userStore.isAuthenticated">
+              <PopoverTrigger class="cursor-pointer">
+                <div class="flex gap-9">
+                  <p class="text-white font-extrabold">Вход</p>
+                  <img src="/arrow.svg" alt="">
+                </div>
+              </PopoverTrigger>
+              <PopoverContent class="flex flex-col gap-4 w-fit p-4 font-extrabold">
+                <button class=" cursor-pointer" @click="openLogin">Вход</button>
+                <button class=" cursor-pointer" @click="openRegister">Регистрация</button>
+              </PopoverContent>
+            </Popover>
 
-          <button v-else class="text-white font-extrabold cursor-pointer" @click="userStore.logout">Выйти</button>
-          <NuxtLink v-if="!userStore.user?.isAdmin" class="text-white font-extrabold" to="/delivery">Заказы</NuxtLink>
-          <NuxtLink v-else class="text-white font-extrabold" to="/admin">Админ панель</NuxtLink>
+            <button v-else class="text-white font-extrabold cursor-pointer" @click="userStore.logout">Выйти</button>
+            <NuxtLink v-if="!userStore.user?.isAdmin" class="text-white font-extrabold" to="/delivery">Заказы</NuxtLink>
+            <NuxtLink v-else class="text-white font-extrabold" to="/admin">Админ панель</NuxtLink>
+          </ClientOnly>
         </nav>
       </div>
       <div class="flex items-center gap-4 mt-5">

@@ -4,8 +4,8 @@
   import { toast } from 'vue-sonner';
   import type { SelectAdoption } from '~/server/database/schema';
   import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-  import EditUserModal from '../modals/EditUserModal.vue';
   import CreateAdoption from '../modals/CreateAdoption.vue';
+  import EditAdoptionModal from '../modals/EditAdoptionModal.vue';
 
   const adoptions = ref<SelectAdoption[]>([]);
 
@@ -52,7 +52,7 @@
 </script>
 
 <template>
-  <!-- <EditUserModal :adoption="selectedAdoption" v-model:is-open="isOpen" @updated="getAdoptions" /> -->
+  <EditAdoptionModal :adoption="selectedAdoption" v-model:is-open="isOpen" @updated="getAdoptions" />
   <CreateAdoption v-model:is-open="isCreateOpen" @created="getAdoptions" />
   <UiLoader :is-loading="isLoading">
     <Button @click="handleCreateAdoption" class="mt-4 p-6 w-1/6 bg-ui-success text-lg cursor-pointer">Создать

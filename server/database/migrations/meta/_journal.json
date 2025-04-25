@@ -36,6 +36,34 @@
       "when": 1745320631709,
       "tag": "0004_acoustic_the_fallen",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1745335755810,
+      "tag": "0005_workable_squirrel_girl",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1745426850550,
+      "tag": "0006_tan_khan",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1745426875521,
+      "tag": "0007_gray_gunslinger",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1745427214602,
+      "tag": "0008_majestic_kat_farrell",
+      "breakpoints": true
     }
   ]
 }

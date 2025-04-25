@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import { useHead, useUserStore, watch, navigateTo, definePageMeta } from '#imports';
   import AdminAdoption from '~/components/admin/AdminAdoption.vue';
+  import AdminAdoptionRequest from '~/components/admin/AdminAdoptionRequest.vue';
+  import AdminProducts from '~/components/admin/AdminProducts.vue';
 
   import { Tabs, TabsList, TabsTrigger, TabsContent } from '~/components/ui/tabs';
   useHead({ title: 'Админ панель' })
@@ -40,7 +42,7 @@
         заказы
       </TabsContent>
       <TabsContent value="products">
-        Товары
+        <AdminProducts />
       </TabsContent>
       <TabsContent value="users">
         <AdminUsers />
@@ -49,7 +51,7 @@
         <AdminAdoption />
       </TabsContent>
       <TabsContent value="requests">
-        Пристройство заявки
+        <AdminAdoptionRequest />
       </TabsContent>
     </Tabs>
   </UISection>
