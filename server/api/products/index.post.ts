@@ -6,11 +6,6 @@ type Body = { images: string[]} & SelectProducts
 export default defineEventHandler(async (event) => {
   const {images, ...rest} = await readBody<Body>(event);
 
-  console.log(images)
-  console.log(rest);
-  // return;
-
-
   try {
     const [product] = await db.insert(products).values(rest).returning();
 

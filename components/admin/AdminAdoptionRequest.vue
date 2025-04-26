@@ -1,16 +1,11 @@
 <script setup>
   import { getLocaleDate } from '#imports';
-  import { onMounted, ref } from 'vue';
+  import { ref } from 'vue';
   import { toast } from 'vue-sonner';
   import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 
   const requests = ref([]);
-
   const isLoading = ref(false);
-
-  onMounted(async () => {
-    await getRequests();
-  })
 
   const getRequests = async () => {
     isLoading.value = true;
@@ -23,6 +18,8 @@
 
     return toast.error('Ошибка', { description: 'Не удалось получить данные' })
   }
+
+  await getRequests();
 
   const handleDeleteRequest = async (id) => {
     const data = await $fetch(`/api/adoption-request/${id}`, { method: 'DELETE' });

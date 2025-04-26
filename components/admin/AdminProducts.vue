@@ -2,14 +2,13 @@
   import { toast } from 'vue-sonner';
   import type { SelectProducts } from '~/server/database/schema';
   import CreateProduct from '../modals/CreateProduct.vue';
+  import EditProductModal from '../modals/EditProductModal.vue';
 
   const isLoading = ref(true);
   const isCreateOpen = ref(false);
+  const isOpen = ref(false);
+  const selectedProduct = ref<SelectProducts>({} as SelectProducts);
   const products = ref<SelectProducts[]>([]);
-
-  onMounted(async () => {
-    await getProducts();
-  })
 
   const getProducts = async () => {
     isLoading.value = true;
@@ -23,21 +22,31 @@
     return toast.error('Ошибка', { description: data.message })
   }
 
+  await getProducts();
+
   const handleCreateProduct = () => {
     isCreateOpen.value = true;
   }
 
-  const handleDeleteProduct = (id: number) => {
+  const handleDeleteProduct = async (id: number) => {
+    const res = await $fetch(`/api/products/${id}`, { method: 'DELETE' });
 
+    if (res.statusCode !== 200) {
+      return toast.error('Ошибка', { description: res.message });
+    }
+
+    toast.success(res.message);
+    return await getProducts();
   }
 
   const handleEditProduct = (item: SelectProducts) => {
-
+    selectedProduct.value = item;
+    isOpen.value = true;
   }
 </script>
 
 <template>
-  <!-- <EditAdoptionModal :adoption="selectedAdoption" v-model:is-open="isOpen" @updated="getProducts" /> -->
+  <EditProductModal :product="selectedProduct" v-model:is-open="isOpen" @updated="getProducts" />
   <CreateProduct v-model:is-open="isCreateOpen" @created="getProducts" />
   <UiLoader :is-loading="isLoading">
     <Button @click="handleCreateProduct" class="mt-4 p-6 w-1/6 bg-ui-success text-lg cursor-pointer">

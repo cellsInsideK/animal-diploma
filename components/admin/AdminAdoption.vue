@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { getLocaleDate } from '#imports';
-  import { onMounted, ref } from 'vue';
+  import { ref } from 'vue';
   import { toast } from 'vue-sonner';
   import type { SelectAdoption } from '~/server/database/schema';
   import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
@@ -14,9 +14,6 @@
   const isCreateOpen = ref(false);
   const selectedAdoption = ref<SelectAdoption>({} as SelectAdoption);
 
-  onMounted(async () => {
-    await getAdoptions();
-  })
 
   const getAdoptions = async () => {
     isLoading.value = true;
@@ -29,6 +26,8 @@
 
     return toast.error('Ошибка', { description: 'Не удалось получить данные' })
   }
+
+  await getAdoptions();
 
   const handleDeleteAdoption = async (id: string) => {
     const data = await $fetch(`/api/adoption/${id}`, { method: 'DELETE' });

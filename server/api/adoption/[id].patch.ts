@@ -2,7 +2,7 @@ import { defineEventHandler, getRouterParam, readBody } from "#imports";
 import { eq } from "drizzle-orm";
 import { supabase } from "~/lib/supabase";
 import { db } from "~/server/database/db";
-import { adoptions, users } from "~/server/database/schema";
+import { adoptions } from "~/server/database/schema";
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')!;

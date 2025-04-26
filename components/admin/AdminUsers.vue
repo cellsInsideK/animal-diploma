@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { getLocaleDate } from '#imports';
-  import { onMounted, ref } from 'vue';
+  import { ref } from 'vue';
   import { toast } from 'vue-sonner';
   import type { SelectUsers } from '~/server/database/schema';
   import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
@@ -11,10 +11,6 @@
   const isLoading = ref(false);
   const isOpen = ref(false);
   const selectedUser = ref<SelectUsers>({} as SelectUsers);
-
-  onMounted(async () => {
-    await getUsers();
-  })
 
   const getUsers = async () => {
     isLoading.value = true;
@@ -27,6 +23,8 @@
 
     return toast.error('Ошибка', { description: 'Не удалось получить данные' })
   }
+
+  await getUsers();
 
   const handleDeleteUser = async (id: string) => {
     const data = await $fetch(`/api/user/${id}`, { method: 'DELETE' });
