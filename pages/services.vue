@@ -41,7 +41,7 @@
         <div class="flex flex-col gap-3 md:gap-6 text-white w-full">
           <h2 class="text-lg md:text-4xl font-extrabold text-center md:text-left">Пристройство</h2>
           <p class="font-medium text-md md:text-2xl">
-            Проверенные приюты, с которыми мы работаем. Выберите питомца и оставьте хаявку
+            Проверенные приюты, с которыми мы работаем. Выберите питомца и оставьте заявку
           </p>
           <NuxtLink
             class="text-ui-primary bg-white rounded-md py-3 text-center font-medium text-xs mt-6 md:max-w-[250px] md:text-lg"

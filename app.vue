@@ -1,8 +1,15 @@
 <script setup lang="ts">
   import { Toaster } from './components/ui/sonner';
 
+  const router = useRouter();
   const userStore = useUserStore();
   const res = await userStore.session();
+
+  watch(() => userStore.isAuthenticated, (newVal, oldVal) => {
+    if (oldVal === true && newVal === false) {
+      return router.push('/')
+    }
+  })
 </script>
 
 <template>

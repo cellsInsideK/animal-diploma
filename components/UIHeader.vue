@@ -80,8 +80,11 @@
             </Popover>
 
             <button v-else class="text-white font-extrabold cursor-pointer" @click="userStore.logout">Выйти</button>
-            <NuxtLink v-if="!userStore.user?.isAdmin" class="text-white font-extrabold" to="/delivery">Заказы</NuxtLink>
-            <NuxtLink v-else class="text-white font-extrabold" to="/admin">Админ панель</NuxtLink>
+            <NuxtLink v-if="userStore.isAuthenticated && !userStore.user?.isAdmin" class="text-white font-extrabold"
+              to="/delivery">Заказы
+            </NuxtLink>
+            <NuxtLink v-else-if="userStore.isAuthenticated && userStore.user?.isAdmin" class="text-white font-extrabold"
+              to="/admin">Админ панель</NuxtLink>
           </ClientOnly>
         </nav>
       </div>

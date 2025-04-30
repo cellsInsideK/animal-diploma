@@ -7,12 +7,14 @@ type Query = {
   sort: 'new' | 'old' | 'cheap' | 'expensive',
   type: '' | keyof typeof productTypeEnum,
   name: string,
+  page: number,
   limit: number
 }
+const pageSize = 8;
 
 export default defineEventHandler(async (event) => {
-  let {sort = 'new', type = '', name = '', limit = 0} = getQuery<Query>(event);
-  name = name === '' ? '' : `%${name}%`
+  let {sort = 'new', type = '', name = '', limit = 0, page = 0} = getQuery<Query>(event);
+  name = name === '' ? '' : `%${name}%`;
 
   let queryBuilder = db
     .select()
@@ -32,6 +34,11 @@ export default defineEventHandler(async (event) => {
       queryBuilder = queryBuilder.limit(+limit);
     }
 
+    if (page !== 0) {
+      queryBuilder = queryBuilder.offset((+page - 1) * pageSize);
+      queryBuilder = queryBuilder.limit(+pageSize);
+    }
+
     switch (sort) {
       case 'new':
         queryBuilder = queryBuilder.orderBy(desc(products.createdAt))
@@ -48,6 +55,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const data = await queryBuilder.execute();
+    const all = await db.$count(products);
 
     const enhancedProducts = await Promise.all(data.map(async (product) => {
       const [images, review] = await Promise.all([
@@ -69,7 +77,8 @@ export default defineEventHandler(async (event) => {
 
     return {
       statusCode: 200,
-      data: enhancedProducts
+      data: enhancedProducts,
+      all
     };
   } catch (error) {
     console.log(`[ERROR]: ${error}`)

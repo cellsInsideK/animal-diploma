@@ -1,8 +1,14 @@
 <script setup>
   const items = ref([]);
+  const page = ref(1);
+  const total = ref(0);
   const isLoading = ref(true);
   const route = useRoute()
   const params = ref(route.query);
+
+  const hasMore = computed(() => {
+    return page.value * 8 < total.value;
+  })
 
   watch(() => route.query, (newValue) => {
     params.value = newValue
@@ -18,8 +24,17 @@
 
   const getData = async () => {
     isLoading.value = true;
-    const res = await $fetch(`/api/products/find?sort=${params.value.sort}&type=${params.value?.type?.trim()}&name=${params.value?.name?.trim()}`);
+    const res = await $fetch(`/api/products/find?sort=${params.value.sort}&page=${page}&type=${params.value?.type?.trim()}&name=${params.value?.name?.trim()}`);
     items.value = res.data;
+    total.value = res.all;
+    isLoading.value = false;
+  }
+
+  const getNext = async () => {
+    isLoading.value = true;
+    page.value += 1;
+    const res = await $fetch(`/api/products/find?sort=${params.value.sort}&page=${page.value}&type=${params.value?.type?.trim()}&name=${params.value?.name?.trim()}`);
+    items.value.push(...res.data);
     isLoading.value = false;
   }
 
@@ -85,21 +100,33 @@
       <div class="flex gap-4">
         <aside class="min-w-[200px] hidden md:block">
           <ul class="flex flex-col gap-4 cursor-pointer">
-            <li @click="params.type = ''">Всё</li>
-            <li @click="params.type = 'dog'">Для собак</li>
-            <li @click="params.type = 'cat'">Для кошек</li>
-            <li @click="params.type = 'rat'">Для грызунов</li>
-            <li @click="params.type = 'toy'">Игрушки и аксессуары</li>
-            <li @click="params.type = 'medicine'">Зооаптека</li>
+            <li :class="params.type.trim() === '' ? 'font-bold text-ui-primary' : ''" @click="params.type = ''">Всё</li>
+            <li :class="params.type === 'dog' ? 'font-bold text-ui-primary' : ''" @click="params.type = 'dog'">Для собак
+            </li>
+            <li :class="params.type === 'cat' ? 'font-bold text-ui-primary' : ''" @click="params.type = 'cat'">Для кошек
+            </li>
+            <li :class="params.type === 'rat' ? 'font-bold text-ui-primary' : ''" @click="params.type = 'rat'">Для
+              грызунов
+            </li>
+            <li :class="params.type === 'toy' ? 'font-bold text-ui-primary' : ''" @click="params.type = 'toy'">Игрушки и
+              аксессуары</li>
+            <li :class="params.type === 'medicine' ? 'font-bold text-ui-primary' : ''"
+              @click="params.type = 'medicine'">
+              Зооаптека</li>
           </ul>
         </aside>
-        <div class="flex gap-12 flex-wrap justify-center w-full">
-          <template v-if="items?.length > 0">
-            <template v-for="item in items">
-              <UIProductCard :item="item" />
+        <div>
+          <div class="flex gap-12 flex-wrap justify-center w-full">
+            <template v-if="items?.length > 0">
+              <template v-for="item in items">
+                <UIProductCard :item="item" />
+              </template>
             </template>
-          </template>
-          <template v-else>Такого товара нет в ассортименте</template>
+            <template v-else>Такого товара нет в ассортименте</template>
+          </div>
+          <Button v-if="hasMore" @click="getNext" class="flex mt-4 mx-auto px-10 py-7 bg-ui-primary cursor-pointer">
+            Найти еще
+          </Button>
         </div>
       </div>
     </UISection>
