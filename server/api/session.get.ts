@@ -1,6 +1,6 @@
 import { and, eq, gt } from "drizzle-orm";
 import { db } from "../database/db";
-import { sessions, users } from "../database/schema";
+import { favorites, sessions, users } from "../database/schema";
 
 export default defineEventHandler(async (event) => {
   const sessionId = getCookie(event, 'session_id');
@@ -19,5 +19,8 @@ export default defineEventHandler(async (event) => {
     return
   }
 
-  return session.users!;
+  const favorite = await db.select({productId: favorites.productId}).from(favorites).where(eq(favorites.userId, session.users?.id!));
+  const mapped = favorite.map(item => item.productId)
+
+  return {user: session.users!, favorites: mapped};
 })

@@ -1,8 +1,9 @@
 import { db } from "~/server/database/db"
+import { products } from "~/server/database/schema";
 
 export default defineEventHandler(async () => {
   try {
-    const product = await db.query.products.findMany();
+    const product = await db.query.products.findMany({orderBy: products.createdAt});
     
     return {
       statusCode: 200,

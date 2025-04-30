@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { boolean, index, integer, pgEnum, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
 export const users = pgTable('users', {
@@ -64,6 +65,11 @@ export const products = pgTable('products', {
   updatedAt: timestamp('updated_at').defaultNow(),
 })
 
+export const productsRelations = relations(products, ({many}) => ({
+  productImages: many(productImages),
+  reviews: many(reviews),
+}))
+
 export type SelectProducts = typeof products.$inferSelect;
 
 export const reviews = pgTable('reviews', {
@@ -74,13 +80,23 @@ export const reviews = pgTable('reviews', {
   description: varchar('description').notNull(),
 })
 
-export type SelectPreviews = typeof reviews.$inferSelect;
+export const reviewsRelations = relations(reviews, ({one}) => ({
+  products: one(products, {fields: [reviews.productId], references: [products.id]})
+}))
+
+export type SelectReviews = typeof reviews.$inferSelect;
 
 export const productImages = pgTable('productImages', {
   id: uuid('id').primaryKey().notNull().defaultRandom(),
   productId: integer('productId').references(() => products.id, {onDelete: 'cascade'}).notNull(),
   image: varchar('image').notNull()
 })
+
+export type SelectProductImages = typeof productImages.$inferSelect;
+
+export const productImagesRelations = relations(productImages, ({one}) => ({
+  products: one(products, {fields: [productImages.productId], references: [products.id]})
+}))
 
 export type SelectImages = typeof productImages.$inferSelect;
 
@@ -92,11 +108,15 @@ export const favorites = pgTable('favorites', {
 
 export type SelectFavorites = typeof favorites.$inferSelect;
 
+export const orderStatusEnum = pgEnum('order_status', ['process', 'completed', 'accepted', 'canceled'])
+
 export const orders = pgTable('orders', {
-  id: integer('id').primaryKey().notNull(),
+  id: integer('id').primaryKey(),
   userId: uuid('userId').references(() => users.id, {onDelete: 'cascade'}).notNull(),
   tel: varchar('tel', {length: 20}).notNull(),
   address: varchar('address', {length: 100}).notNull(),
+  status: orderStatusEnum('status').notNull().default('process'),
+  name: varchar('name').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 })

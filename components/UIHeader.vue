@@ -6,6 +6,8 @@
   const userStore = useUserStore();
   const registerVisible = ref(false);
   const loginVisible = ref(false);
+  const router = useRouter();
+  const input = ref('');
 
   const openRegister = () => {
     registerVisible.value = true;
@@ -13,6 +15,15 @@
 
   const openLogin = () => {
     loginVisible.value = true;
+  }
+
+  const submitInput = () => {
+    if (Number.isInteger(+input.value) && input.value !== '') {
+      router.push(`/products/${+input.value}`)
+      return input.value = ''
+    }
+    router.push(`/products?sort=new&type= &name=${input.value}`)
+    return input.value = ''
   }
 </script>
 
@@ -34,7 +45,7 @@
               <NuxtLink class="!no-underline py-1" to="/">Главная</NuxtLink>
               <NuxtLink class="!no-underline py-1" to="/services">Услуги
               </NuxtLink>
-              <NuxtLink class="!no-underline py-1" to="/products">Товары
+              <NuxtLink class="!no-underline py-1" to="/products?sort=new&type= &name=">Товары
               </NuxtLink>
               <template v-if="!userStore.isAuthenticated">
                 <button class="w-fit py-1" @click="openLogin">Вход</button>
@@ -51,7 +62,7 @@
           <NuxtLink class="text-white font-extrabold" to="/">Главная</NuxtLink>
           <NuxtLink class="text-white font-extrabold" to="/services">Услуги
           </NuxtLink>
-          <NuxtLink class="text-white font-extrabold" to="/products">Товары
+          <NuxtLink class="text-white font-extrabold" to="/products?sort=new&type= &name=">Товары
           </NuxtLink>
 
           <ClientOnly>
@@ -75,7 +86,8 @@
         </nav>
       </div>
       <div class="flex items-center gap-4 mt-5">
-        <input class=" bg-white rounded-xl py-3 px-5 w-full" type="text" placeholder="Поиск товаров">
+        <input @change="submitInput" v-model.trim="input" class=" bg-white rounded-xl py-3 px-5 w-full" type="text"
+          placeholder="Поиск товаров">
         <NuxtLink to="/cart">
           <img src="/cart.svg" alt="">
         </NuxtLink>

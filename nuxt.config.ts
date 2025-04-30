@@ -21,7 +21,7 @@ export default defineNuxtConfig({
 
   router: {
     options: {
-      linkActiveClass: 'underline underline-offset-[15px] decoration-4'
+      // linkActiveClass: 'underline underline-offset-[15px] decoration-4'
     }
   },
 

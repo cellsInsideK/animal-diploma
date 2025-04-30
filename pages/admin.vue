@@ -19,7 +19,6 @@
 
 <template>
   <UISection>
-    <h1 class="text-ui-subtitle font-medium">Админ панель</h1>
     <Tabs default-value="orders" class="mt-4">
       <TabsList class="grid w-full grid-cols-5 gap-3">
         <TabsTrigger
@@ -39,7 +38,7 @@
           value="requests">Пристройство заявки</TabsTrigger>
       </TabsList>
       <TabsContent value="orders">
-        заказы
+        <AdminOrders />
       </TabsContent>
       <TabsContent value="products">
         <AdminProducts />

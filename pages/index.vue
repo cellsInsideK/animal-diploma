@@ -1,7 +1,19 @@
 <script setup>
+  import Autoplay from 'embla-carousel-autoplay'
+
+  const items = ref([]);
+  const isLoading = ref(true);
+
+  onMounted(async () => {
+    const res = await $fetch('/api/products/find?limit=10');
+    items.value = res.data;
+    isLoading.value = false;
+  })
+
   useHead({
     title: 'Тузик | Магазин для вашего питомца!'
   })
+
 </script>
 
 <template>
@@ -18,7 +30,7 @@
           class="text-md font-bold py-3 px-10 md:py-5 md:px-17 border-3 border-ui-primary rounded-xl text-ui-primary">
           Наши услуги
         </NuxtLink>
-        <NuxtLink to="/products"
+        <NuxtLink to="/products?sort=new&type= &name="
           class="text-md text-white font-bold py-3 px-10 md:py-5 md:px-17 border-3 border-ui-primary rounded-xl bg-ui-primary">
           Наши товары
         </NuxtLink>
@@ -28,108 +40,33 @@
       class=" max-w-fit overflow-hidden absolute -inset-10 opacity-40 lg:opacity-100 -z-1 h-fit w-fit lg:block lg:static"
       alt="">
   </section>
-  <section class="container mx-auto my-8 pl-3">
+  <section class="container mx-auto my-8 pl-3" v-if="!isLoading">
     <h2 class="font-extrabold text-2xl text-ui-primary opacity-80 mb-9">Новинки в продаже</h2>
-    <div class="flex flex-nowrap flex-row gap-8 overflow-hidden">
-      <div class="border-3 border-ui-primary py-8 px-5 rounded-xl max-w-[350px] shrink-0">
-        <div class="flex gap-3 items-center">
-          <img src="/product.png" alt="" class="h-full">
-          <div class="flex flex-col gap-2">
-            <p class="font-semibold text-ui-primary text-3xl">200 ₽</p>
-            <h3 class="font-medium text-sm">
-              Сухой корм DELICANA
-              Premium, индейка с
-              овощами, 400 гр.
-            </h3>
-            <div class="flex gap-1.5">
-              <img src="/star.svg" alt="" v-for="i in 5">
-            </div>
-            <button class="rounded-lg bg-ui-primary py-2 px-6 w-fit text-white mt-2">Купить</button>
-          </div>
-        </div>
-      </div>
-      <div class="border-3 border-ui-primary py-8 px-5 rounded-xl max-w-[350px] shrink-0">
-        <div class="flex gap-3 items-center">
-          <img src="/product.png" alt="" class="h-full">
-          <div class="flex flex-col gap-2">
-            <p class="font-semibold text-ui-primary text-3xl">200 ₽</p>
-            <h3 class="font-medium text-sm">
-              Сухой корм DELICANA
-              Premium, индейка с
-              овощами, 400 гр.
-            </h3>
-            <div class="flex gap-1.5">
-              <img src="/star.svg" alt="" v-for="i in 5">
-            </div>
-            <button class="rounded-lg bg-ui-primary py-2 px-6 w-fit text-white mt-2">Купить</button>
-          </div>
-        </div>
-      </div>
-      <div class="border-3 border-ui-primary py-8 px-5 rounded-xl max-w-[350px] shrink-0">
-        <div class="flex gap-3 items-center">
-          <img src="/product.png" alt="" class="h-full">
-          <div class="flex flex-col gap-2">
-            <p class="font-semibold text-ui-primary text-3xl">200 ₽</p>
-            <h3 class="font-medium text-sm">
-              Сухой корм DELICANA
-              Premium, индейка с
-              овощами, 400 гр.
-            </h3>
-            <div class="flex gap-1.5">
-              <img src="/star.svg" alt="" v-for="i in 5">
-            </div>
-            <button class="rounded-lg bg-ui-primary py-2 px-6 w-fit text-white mt-2">Купить</button>
-          </div>
-        </div>
-      </div>
-      <div class="border-3 border-ui-primary py-8 px-5 rounded-xl max-w-[350px] shrink-0">
-        <div class="flex gap-3 items-center">
-          <img src="/product.png" alt="" class="h-full">
-          <div class="flex flex-col gap-2">
-            <p class="font-semibold text-ui-primary text-3xl">200 ₽</p>
-            <h3 class="font-medium text-sm">
-              Сухой корм DELICANA
-              Premium, индейка с
-              овощами, 400 гр.
-            </h3>
-            <div class="flex gap-1.5">
-              <img src="/star.svg" alt="" v-for="i in 5">
-            </div>
-            <button class="rounded-lg bg-ui-primary py-2 px-6 w-fit text-white mt-2">Купить</button>
-          </div>
-        </div>
-      </div>
-      <div class="border-3 border-ui-primary py-8 px-5 rounded-xl max-w-[350px] shrink-0">
-        <div class="flex gap-3 items-center">
-          <img src="/product.png" alt="" class="h-full">
-          <div class="flex flex-col gap-2">
-            <p class="font-semibold text-ui-primary text-3xl">200 ₽</p>
-            <h3 class="font-medium text-sm">
-              Сухой корм DELICANA
-              Premium, индейка с
-              овощами, 400 гр.
-            </h3>
-            <div class="flex gap-1.5">
-              <img src="/star.svg" alt="" v-for="i in 5">
-            </div>
-            <button class="rounded-lg bg-ui-primary py-2 px-6 w-fit text-white mt-2">Купить</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Carousel :orientation="'horizontal'" :opts="{ align: 'start', dragFree: true, loop: true }"
+      :plugins="[Autoplay({ delay: 2000 })]">
+      <CarouselContent>
+        <CarouselItem v-for="item in items" :key="item.id" class="basis-auto">
+          <!-- @vue-ignore -->
+          <UIProductCard :item="item" class="h-full" />
+        </CarouselItem>
+      </CarouselContent>
+    </Carousel>
   </section>
   <section class="container mx-auto my-8 pl-3">
     <h2 class="font-extrabold text-2xl text-ui-primary opacity-80 mb-9">Популярные категории</h2>
     <div class="flex flex-wrap md:flex-nowrap gap-5 items-center justify-center ">
-      <div class="grid place-items-center bg-ui-primary rounded-xl w-full max-w-xs aspect-square">
+      <NuxtLink :to="`/products?sort=new&type=dog&name=`"
+        class="grid place-items-center bg-ui-primary rounded-xl w-full max-w-xs aspect-square">
         <img src="/dog.svg" alt="">
-      </div>
-      <div class="grid place-items-center bg-ui-primary rounded-xl w-full max-w-xs aspect-square">
+      </NuxtLink>
+      <NuxtLink :to="`/products?sort=new&type=cat&name=`"
+        class="grid place-items-center bg-ui-primary rounded-xl w-full max-w-xs aspect-square">
         <img src="/cat.svg" alt="">
-      </div>
-      <div class="grid place-items-center bg-ui-primary rounded-xl w-full max-w-xs aspect-square">
+      </NuxtLink>
+      <NuxtLink :to="`/products?sort=new&type=rat&name=`"
+        class="grid place-items-center bg-ui-primary rounded-xl w-full max-w-xs aspect-square">
         <img src="/hamster.svg" alt="">
-      </div>
+      </NuxtLink>
     </div>
   </section>
 </template>

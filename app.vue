@@ -1,11 +1,8 @@
 <script setup lang="ts">
   import { Toaster } from './components/ui/sonner';
-  import type { SelectUsers } from './server/database/schema';
 
   const userStore = useUserStore();
-
-  const res = await $fetch('/api/session');
-  userStore.user = res as SelectUsers;
+  const res = await userStore.session();
 </script>
 
 <template>
