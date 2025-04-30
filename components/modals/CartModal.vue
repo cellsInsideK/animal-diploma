@@ -15,6 +15,10 @@
       return toast.error('Ошибка', { description: 'Необходимо заполнить все поля' })
     }
 
+    if (!validateTel(form.tel)) {
+      return toast.error('Необходимо ввести корректный номер')
+    }
+
     if (form.type === 'delivery' && form.address === '') {
       return toast.error('Ошибка', { description: 'Необходимо указать адрес для доставки' })
     }
@@ -48,7 +52,7 @@
 <template>
   <Dialog v-if="isVisible" v-model:open="isVisible">
     <DialogContent>
-      <h2 class="text-center font-bold text-2xl">Оставить отзыв</h2>
+      <h2 class="text-center font-bold text-2xl">Оформление заказа</h2>
       <Label for="name" class="mt-2 font-semibold">Имя</Label>
       <Input v-model="form.name" id="name" type="text" class="border-2 border-ui-primary" placeholder="Введите имя" />
       <Label for="tel" class="mt-2 font-semibold">Телефон</Label>

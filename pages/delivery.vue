@@ -3,6 +3,7 @@
 
   const isLoading = ref(true);
   const data = ref([]);
+  const userStore = useUserStore();
 
   onMounted(async () => {
     await getData();

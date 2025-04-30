@@ -10,6 +10,10 @@
       return toast.error('Необходимо заполнить все поля')
     }
 
+    if (!validateTel(form.value.tel)) {
+      return toast.error('Необходимо ввести корректный номер')
+    }
+
     const res = await $fetch('/api/adoption-request', {
       method: 'POST', body: {
         name: form.value.name,
