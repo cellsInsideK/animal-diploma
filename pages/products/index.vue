@@ -36,11 +36,19 @@
   }
 
   const getNext = async () => {
+    const s = window.scrollY;
+    console.log(window.scrollY)
     isLoading.value = true;
     page.value += 1;
     const res = await $fetch(`/api/products/find?sort=${params.value.sort}&page=${page.value}&type=${params.value?.type?.trim()}&name=${params.value?.name?.trim()}`);
     isLoading.value = false;
     items.value.push(...res.data);
+    await new Promise((res) => {
+      setTimeout(res, 200);
+    })
+    window.scrollTo({
+      top: s
+    })
   }
 
   useHead({ title: 'Ассортимент' })
