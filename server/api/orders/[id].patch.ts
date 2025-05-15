@@ -8,6 +8,13 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   try {
+
+    if (body.isVisible === false) {
+      await db.update(orders).set({isVisible: false}).where(eq(orders.id, id));
+
+      return ({statusCode: 200})
+    }
+
     const [currentOrder] = await db.select().from(orders).where(eq(orders.id, id));
 
     if (currentOrder.status !== 'canceled' && body.status === 'canceled') {

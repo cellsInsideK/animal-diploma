@@ -11,6 +11,10 @@ export const useCartStore = defineStore('cart', () => {
     return cart.value.reduce((sum, product) => sum += (product.amount * product.price), 0)
   })
 
+  const summaryItems = computed(() => {
+    return cart.value.reduce((sum, product) => sum += product.amount, 0)
+  })
+
   const addProduct = (item: SelectProducts) => {
     const hasInCart = cart.value.find(product => product.id === item.id)
     
@@ -49,5 +53,5 @@ export const useCartStore = defineStore('cart', () => {
     return cart.value = []
   }
 
-  return { cart, summaryPrice, addProduct, increaseItem, decreaseItem, deleteItem, clearCart }
+  return { cart, summaryPrice, summaryItems, addProduct, increaseItem, decreaseItem, deleteItem, clearCart }
 })

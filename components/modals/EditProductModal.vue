@@ -10,6 +10,7 @@
 
   type Body = { images: string[] } & SelectProducts;
 
+  const sorts = ref([]);
   const { product } = defineProps<{ product: SelectProducts }>();
   const isOpen = defineModel<boolean>('isOpen');
   const emit = defineEmits<{
@@ -30,6 +31,12 @@
   })
 
   const isFormLoading = ref(false);
+
+  onMounted(async () => {
+    const res = await $fetch('/api/categories');
+    //@ts-ignore
+    sorts.value = res.data;
+  })
 
   const handleUploadImage = async (e: Event) => {
     const files = (e.target as HTMLInputElement).files;
@@ -96,8 +103,10 @@
         </SelectTrigger>
         <SelectContent class="border-2 border-ui-primary">
           <SelectGroup>
-            <SelectItem v-for="item in Object.keys(productTypeEnum)" :value="item">
-              {{ productTypeEnum[item as keyof typeof productTypeEnum] }}
+            <!-- @vue-ignore -->
+            <SelectItem v-for="item in sorts" :value="item.id" :key="item.id">
+              <!-- @vue-ignore -->
+              {{ item.name }}
             </SelectItem>
           </SelectGroup>
         </SelectContent>

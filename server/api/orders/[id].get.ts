@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
       .from(orders)
       .leftJoin(orderItems, eq(orderItems.orderId, orders.id))
       .leftJoin(products, eq(products.id, orderItems.productId))
-      .where(eq(orders.userId, id))  // specify your order ID
+      .where(eq(orders.userId, id))
       .groupBy(orders.id);
 
     return {

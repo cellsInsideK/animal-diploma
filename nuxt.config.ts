@@ -19,12 +19,6 @@ export default defineNuxtConfig({
 
   modules: ["@nuxt/fonts", 'shadcn-nuxt', '@pinia/nuxt', '@nuxtjs/supabase'],
 
-  router: {
-    options: {
-      // linkActiveClass: 'underline underline-offset-[15px] decoration-4'
-    }
-  },
-
   fonts: {
     families: [{name: 'Montserrat', provider: 'google', display: 'swap'}]
   },

@@ -4,6 +4,7 @@
   import LoginModal from './modals/LoginModal.vue';
 
   const userStore = useUserStore();
+  const cartStore = useCartStore();
   const registerVisible = ref(false);
   const loginVisible = ref(false);
   const router = useRouter();
@@ -54,7 +55,6 @@
               <template v-else>
                 <button class="w-fit py-1" @click="userStore.logout">Выйти</button>
               </template>
-              <NuxtLink class="!no-underline py-1" to="/delivery">Заказы</NuxtLink>
             </div>
           </PopoverContent>
         </Popover>
@@ -80,11 +80,10 @@
             </Popover>
 
             <button v-else class="text-white font-extrabold cursor-pointer" @click="userStore.logout">Выйти</button>
-            <NuxtLink v-if="userStore.isAuthenticated && !userStore.user?.isAdmin" class="text-white font-extrabold"
-              to="/delivery">Заказы
-            </NuxtLink>
-            <NuxtLink v-else-if="userStore.isAuthenticated && userStore.user?.isAdmin" class="text-white font-extrabold"
-              to="/admin">Админ панель</NuxtLink>
+
+            <NuxtLink v-if="userStore.isAuthenticated && userStore.user?.isAdmin" class="text-white font-extrabold"
+              to="/admin">
+              Админ панель</NuxtLink>
           </ClientOnly>
         </nav>
       </div>
@@ -92,10 +91,16 @@
         <input @change="submitInput" v-model.trim="input" class=" bg-white rounded-xl py-3 px-5 w-full" type="text"
           placeholder="Поиск товаров">
         <NuxtLink to="/cart">
-          <img src="/cart.svg" alt="">
+          <div class="relative">
+            <img src="/cart.svg" alt="">
+            <div v-if="cartStore.summaryItems > 0"
+              class="absolute -top-4 -right-4 bg-ui-danger rounded-full p-2 h-[25px] aspect-square text-white flex items-center justify-center">
+              {{ cartStore.summaryItems }}
+            </div>
+          </div>
         </NuxtLink>
-        <NuxtLink to="/favorites">
-          <img src="/heart.svg" alt="">
+        <NuxtLink to="/profile">
+          <img src="/profile.svg" class="size-10" alt="">
         </NuxtLink>
       </div>
     </div>

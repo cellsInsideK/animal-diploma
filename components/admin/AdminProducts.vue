@@ -68,7 +68,7 @@
       <TableBody>
         <TableRow v-for="item in products" :key="item.id">
           <TableCell>{{ item.name }}</TableCell>
-          <TableCell>{{ productTypeEnum[item.type] }}</TableCell>
+          <TableCell>{{ item.type }}</TableCell>
           <TableCell>{{ item.price }}</TableCell>
           <TableCell>{{ item.quantity }}</TableCell>
           <TableCell>{{ getLocaleDate(item.createdAt!) }}</TableCell>

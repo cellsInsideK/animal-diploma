@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
     ])
 
     const simillar = await db.select().from(products).where(and(
-      eq(products.type, product.type),
+      eq(products.type, product.type!),
       ne(products.id, product.id)
     ));
     const simillarProducts = await Promise.all(simillar.map(async (product) => {

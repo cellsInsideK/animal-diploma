@@ -1,9 +1,11 @@
 <script setup lang="ts">
+  import ChatModal from './components/modals/ChatModal.vue';
   import { Toaster } from './components/ui/sonner';
 
   const router = useRouter();
   const userStore = useUserStore();
-  const res = await userStore.session();
+  await userStore.session();
+  const isVisible = ref(false);
 
   watch(() => userStore.isAuthenticated, (newVal, oldVal) => {
     if (oldVal === true && newVal === false) {
@@ -14,7 +16,12 @@
 
 <template>
   <Toaster />
+  <ChatModal v-model:is-visible="isVisible" />
   <UIHeader />
+  <button @click="isVisible = true"
+    class="fixed bottom-6 right-6 h-[60px] z-10 aspect-square cursor-pointer flex justify-center items-center p-4 bg-ui-primary rounded-full drop-shadow-xl drop-shadow-ui-primary/60">
+    <img src="/chat.svg" alt="">
+  </button>
   <main class="flex flex-col flex-1">
     <NuxtPage />
   </main>

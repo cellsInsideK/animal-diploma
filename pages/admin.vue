@@ -20,7 +20,7 @@
 <template>
   <UISection>
     <Tabs default-value="orders" class="mt-4">
-      <TabsList class="grid w-full grid-cols-5 gap-3">
+      <TabsList class="grid w-full h-full grid-cols-5 grid-rows-2 gap-3">
         <TabsTrigger
           class="bg-ui-primary p-2 text-white rounded-md text-md cursor-pointer data-[state=active]:text-ui-primary data-[state=active]:shadow-slate-400"
           value="orders">Заказы</TabsTrigger>
@@ -36,6 +36,15 @@
         <TabsTrigger
           class="bg-ui-primary p-2 text-white rounded-md text-md cursor-pointer data-[state=active]:text-ui-primary data-[state=active]:shadow-slate-400"
           value="requests">Пристройство заявки</TabsTrigger>
+        <TabsTrigger
+          class="bg-ui-primary p-2 text-white rounded-md text-md cursor-pointer data-[state=active]:text-ui-primary data-[state=active]:shadow-slate-400"
+          value="category">Категории</TabsTrigger>
+        <TabsTrigger
+          class="bg-ui-primary p-2 text-white rounded-md text-md cursor-pointer data-[state=active]:text-ui-primary data-[state=active]:shadow-slate-400"
+          value="grooming">Грумминг заявки</TabsTrigger>
+        <TabsTrigger
+          class="bg-ui-primary p-2 text-white rounded-md text-md cursor-pointer data-[state=active]:text-ui-primary data-[state=active]:shadow-slate-400"
+          value="walking">Выгул и передержка</TabsTrigger>
       </TabsList>
       <TabsContent value="orders">
         <AdminOrders />
@@ -51,6 +60,15 @@
       </TabsContent>
       <TabsContent value="requests">
         <AdminAdoptionRequest />
+      </TabsContent>
+      <TabsContent value="category">
+        <AdminCategories />
+      </TabsContent>
+      <TabsContent value="grooming">
+        <AdminGrooming />
+      </TabsContent>
+      <TabsContent value="walking">
+        <AdminWalking />
       </TabsContent>
     </Tabs>
   </UISection>

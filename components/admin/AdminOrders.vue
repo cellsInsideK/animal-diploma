@@ -6,14 +6,14 @@
   const sort = ref('')
   const sortedData = computed(() => {
     if (sort.value === 'canceled') {
-      return data.value.filter(item => item.order.status === 'canceled')
+      return data.value.filter(item => item.order.status === 'canceled' && item.order.isVisible === true)
     }
 
     if (sort.value === 'accepted') {
-      return data.value.filter(item => item.order.status === 'accepted')
+      return data.value.filter(item => item.order.status === 'accepted' && item.order.isVisible === true)
     }
 
-    return data.value;
+    return data.value.filter(item => item.order.isVisible === true)
   })
 
   onMounted(async () => {

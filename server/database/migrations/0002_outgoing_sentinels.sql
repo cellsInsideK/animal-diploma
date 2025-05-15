@@ -1,0 +1,1 @@
+ALTER TABLE "orders" ADD COLUMN "isVisible" boolean DEFAULT true NOT NULL;

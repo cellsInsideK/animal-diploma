@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { boolean, index, integer, pgEnum, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { boolean, date, index, integer, pgEnum, pgTable, time, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -50,17 +50,13 @@ export const adoptionRequests = pgTable('adoptionRequests', {
 
 export type SelectAdoptionRequests = typeof adoptionRequests.$inferSelect;
 
-export const productType = pgEnum('productType', ['cat', 'dog', 'toy', 'medicine', 'rat']);
-
-export type SelectProductType = typeof productType.enumValues;
-
 export const products = pgTable('products', {
   id: integer('id').primaryKey().notNull(),
   name: varchar('name').notNull(),
   price: integer('price').notNull(),
   quantity: integer('quantity').notNull(),
   description: varchar('description').notNull(),
-  type: productType('type').notNull(),
+  type: uuid('type').references(() => category.id, {onDelete: 'cascade'}),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 })
@@ -71,6 +67,15 @@ export const productsRelations = relations(products, ({many}) => ({
 }))
 
 export type SelectProducts = typeof products.$inferSelect;
+
+export const category = pgTable('category', {
+  id: uuid('id').primaryKey().notNull().defaultRandom(),
+  name: varchar('name').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+})
+
+export type SelectCategory = typeof category.$inferSelect;
 
 export const reviews = pgTable('reviews', {
   id: uuid('id').primaryKey().notNull().defaultRandom(),
@@ -117,6 +122,7 @@ export const orders = pgTable('orders', {
   address: varchar('address', {length: 100}).notNull(),
   status: orderStatusEnum('status').notNull().default('process'),
   name: varchar('name').notNull(),
+  isVisible: boolean('isVisible').notNull().default(true),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 })
@@ -131,3 +137,44 @@ export const orderItems = pgTable('order_items', {
 });
 
 export type SelectOrderItems = typeof orderItems.$inferSelect;
+
+export const walking = pgTable('walking', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  status: orderStatusEnum('status').notNull().default('process'),
+  type: varchar('type').notNull(),
+  name: varchar('name').notNull(),
+  tel: varchar('tel', {length: 20}).notNull(),
+  animalType: varchar('animalType').notNull(),
+  date: varchar('date'),
+  time: varchar('time'),
+  comment: varchar('comment'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+})
+
+export type SelectWalking = typeof walking.$inferSelect;
+
+export const grooming = pgTable('groomin', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  status: orderStatusEnum('status').notNull().default('process'),
+  name: varchar('name').notNull(),
+  tel: varchar('tel', {length: 20}).notNull(),
+  animalType: varchar('animalType').notNull(),
+  breed: varchar('breed').notNull(),
+  age: varchar('age').notNull(),
+  comment: varchar('comment'),
+  items: varchar('items').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+})
+
+export type SelectGrooming = typeof grooming.$inferSelect;
+
+export const groomingReviews = pgTable('grooming_Reviews', {
+  id: uuid('id').primaryKey().notNull().defaultRandom(),
+  userId: uuid('userId').references(() => users.id, {onDelete: 'cascade'}).notNull(),
+  rating: integer('rating').notNull(),
+  description: varchar('description').notNull(),
+})
+
+export type SelectGroomingReviews = typeof groomingReviews.$inferSelect;

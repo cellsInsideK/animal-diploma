@@ -17,7 +17,7 @@
             вашего питомца</p>
           <NuxtLink
             class="text-ui-primary bg-white rounded-md py-3 text-center font-medium text-xs mt-6 md:max-w-[250px] md:text-lg"
-            to="https://puffy-groom.com/" target="_blank">
+            to="/grooming">
             Подробнее
           </NuxtLink>
         </div>
@@ -31,7 +31,7 @@
           </p>
           <NuxtLink
             class="text-ui-primary bg-white rounded-md py-3 text-center font-medium text-xs mt-6 md:max-w-[250px] md:text-lg"
-            to="https://www.walkwag.ru/" target="_blank">
+            to="/walking">
             Подробнее
           </NuxtLink>
         </div>

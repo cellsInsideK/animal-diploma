@@ -1,0 +1,1 @@
+ALTER TABLE "groomin" ADD COLUMN "items" varchar NOT NULL;

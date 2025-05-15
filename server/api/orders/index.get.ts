@@ -1,4 +1,4 @@
-import { avg, count, eq, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "~/server/database/db";
 import { orderItems, orders, productImages, products, reviews } from "~/server/database/schema";
 

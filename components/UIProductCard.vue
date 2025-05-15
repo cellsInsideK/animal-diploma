@@ -66,8 +66,6 @@
 
     return `(${item.reviews.count} отз${suffix})`;
   }
-
-  //TODO add to favorites
 </script>
 
 <template>

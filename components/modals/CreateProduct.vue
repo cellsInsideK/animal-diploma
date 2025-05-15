@@ -1,5 +1,5 @@
-<script setup lang="ts">
-  import { reactive, ref } from 'vue';
+<script setup>
+  import { ref } from 'vue';
   import { Dialog, DialogContent, DialogFooter } from '../ui/dialog';
 
   import { toast } from 'vue-sonner';
@@ -7,20 +7,23 @@
   import { Input } from '../ui/input';
   import { Label } from '../ui/label';
   import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-  import type { SelectProducts } from '~/server/database/schema';
   import { createImageHash, useSupabaseClient } from '#imports';
 
-  type Body = { images: [] } & SelectProducts
-  const formFactory = () => { return { name: '', price: 200, type: 'cat', quantity: 20, description: '', images: [] } }
+  const formFactory = () => { return { name: '', price: 200, type: 'cat', quantity: 20, description: '', images: [] } };
+  const sorts = ref([]);
 
-  const emit = defineEmits<{
-    (e: 'created'): void
-  }>();
-  const isOpen = defineModel<boolean>('isOpen');
+  const emit = defineEmits(['created']);
+  const isOpen = defineModel('isOpen');
 
   const isFormLoading = ref(false);
-  const form = ref<Body>(formFactory() as Body);
+  const form = ref(formFactory());
   const supabase = useSupabaseClient();
+
+  onMounted(async () => {
+    const res = await $fetch('/api/categories');
+    //@ts-ignore
+    sorts.value = res.data;
+  })
 
   const handleSubmit = async () => {
     if (form.value.name === '' || form.value.price <= 0 || form.value.description === '' || form.value.description === '' || form.value.quantity <= 0 || form.value.images.length === 0) {
@@ -35,15 +38,15 @@
       return toast.error('Ошибка', { description: res.message });
     }
 
-    form.value = formFactory() as Body;
+    form.value = formFactory();
 
     toast.success(res.message);
     emit('created')
     return isOpen.value = false;
   }
 
-  const handleUploadImage = async (e: Event) => {
-    const files = (e.target as HTMLInputElement).files;
+  const handleUploadImage = async (e) => {
+    const files = (e.target).files;
     if (!files) return;
 
     isFormLoading.value = true;
@@ -56,7 +59,7 @@
       const fileName = createImageHash(1000, 9999, files[i].name);
       const { data, error } = await supabase.storage.from('images').upload(fileName, files[i]);
 
-      form.value.images.push(fileName as never);
+      form.value.images.push(fileName);
 
       if (error) {
         toast.error('Ошибка', { description: 'Не удалось загрузить изображения' });
@@ -86,8 +89,8 @@
         </SelectTrigger>
         <SelectContent class="border-2 border-ui-primary">
           <SelectGroup>
-            <SelectItem v-for="item in Object.keys(productTypeEnum)" :value="item">
-              {{ productTypeEnum[item as keyof typeof productTypeEnum] }}
+            <SelectItem v-for="item in sorts" :value="item.id" :key="item.id">
+              {{ item.name }}
             </SelectItem>
           </SelectGroup>
         </SelectContent>

@@ -127,6 +127,17 @@
     return toast.success('Товар добавлен в корзину!');
   }
 
+  const handleDeleteReview = async (id: string) => {
+    const res = await $fetch(`/api/reviews/${id}`, { method: 'DELETE' });
+
+    if (res.statusCode !== 200) {
+      return toast.error("Ошибка", { description: res.message })
+    }
+
+    toast.success(res.message);
+    return await getData()
+  }
+
   watch(userStore.favoriteStorage, (newVal) => {
     inFavorite.value = newVal.findIndex(i => i === item.value.id)
   })
@@ -206,6 +217,8 @@
             <div class="flex gap-2 mb-4">
               <img src="/star.svg" v-for="i in item.reviews.rating" alt="">
               {{ item.username }}
+              <img v-if="userStore.isAuthenticated && userStore.user?.isAdmin"
+                @click="handleDeleteReview(item.reviews.id)" class="ml-auto cursor-pointer" src="/delete.svg" alt="">
             </div>
             <p>{{ item.reviews.description }}</p>
           </div>

@@ -28,7 +28,7 @@
             <UIProductCard :item="item" />
           </template>
         </template>
-        <template v-else>Такого товара нет в ассортименте</template>
+        <template v-else>Добавьте товар в избранное - порадуйте своего питомца!</template>
       </div>
     </UISection>
   </UiLoader>
