@@ -9,18 +9,6 @@
 
   const emit = defineEmits(['updated']);
 
-  const handleHide = async () => {
-    const res = await $fetch(`/api/orders/${item.order.id}`, {
-      method: 'PATCH',
-      body: { isVisible: false }
-    })
-
-    if (res.statusCode !== 200) {
-      return toast.error('Ошибка', { description: res.message });
-    }
-    emit('updated')
-  }
-
   const handleDelete = async () => {
     const res = await $fetch(`/api/orders/${item.order.id}`, {
       method: 'DELETE'
@@ -146,9 +134,6 @@
           <Button @click="handleAccept" v-if="admin" class="bg-ui-success cursor-pointer py-5 px-8">Подтвердить</Button>
           <Button @click="handleCancel" class="bg-ui-danger cursor-pointer py-5 px-8">Отменить</Button>
         </div>
-        <Button @click="handleHide" v-if="admin && item.order.isVisible"
-          class="bg-ui-primary cursor-pointer py-5 px-8">Скрыть
-          заказ</Button>
       </AccordionContent>
     </AccordionItem>
   </Accordion>

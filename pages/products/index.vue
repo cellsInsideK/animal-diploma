@@ -39,8 +39,8 @@
     isLoading.value = true;
     page.value += 1;
     const res = await $fetch(`/api/products/find?sort=${params.value.sort}&page=${page.value}&type=${params.value?.type?.trim()}&name=${params.value?.name?.trim()}`);
-    items.value.push(...res.data);
     isLoading.value = false;
+    items.value.push(...res.data);
   }
 
   useHead({ title: 'Ассортимент' })

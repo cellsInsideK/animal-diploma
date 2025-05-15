@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { useLocalStorage } from '@vueuse/core';
+
   type Chat = {
     type: 'bot' | 'user',
     message: string
@@ -6,9 +8,9 @@
 
   const isVisible = defineModel<boolean>('isVisible');
   const message = ref('');
-  const messages = ref<Chat[]>([
+  const messages = useLocalStorage<Chat[]>('messages', [
     { type: 'bot', message: 'Привет! Я ассистент зоомагазина “Тузик”. Чем могу быть полезен?' },
-  ])
+  ]);
 
   const sendMessage = () => {
     if (message.value.trim() === '') {
@@ -17,7 +19,8 @@
 
     messages.value.push({ type: 'user', message: message.value });
     message.value = '';
-    // запрос с ответным сообщением
+
+    // запрос на серв
     messages.value.push({ type: 'bot', message: 'Сообщение от ассистента' })
   }
 </script>

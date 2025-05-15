@@ -13,7 +13,7 @@
       return data.value.filter(item => item.order.status === 'accepted' && item.order.isVisible === true)
     }
 
-    return data.value.filter(item => item.order.isVisible === true)
+    return data.value
   })
 
   onMounted(async () => {

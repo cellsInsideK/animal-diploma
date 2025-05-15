@@ -51,7 +51,7 @@
   }
 
   const handleDeleteReview = async (id: string) => {
-    const res = await $fetch(`/api/reviews/${id}`, { method: 'DELETE' });
+    const res = await $fetch(`/api/grooming-review/${id}`, { method: 'DELETE' });
 
     if (res.statusCode !== 200) {
       return toast.error("Ошибка", { description: res.message })
@@ -62,6 +62,14 @@
   }
 
   const addItem = (item: string) => {
+    if (items.value.includes('Комплекс') && item !== 'Комплекс') {
+      return
+    }
+
+    if (!items.value.includes('Комплекс') && item === 'Комплекс') {
+      return items.value = ['Комплекс']
+    }
+
     if (items.value.includes(item)) {
       return items.value = items.value.filter(val => val !== item)
     }
