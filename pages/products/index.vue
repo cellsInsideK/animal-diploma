@@ -26,7 +26,7 @@
   const getData = async () => {
     isLoading.value = true;
     const [res1, res2] = await Promise.all([
-      await $fetch(`/api/products/find?sort=${params.value.sort}&page=${page}&type=${params.value?.type?.trim()}&name=${params.value?.name?.trim()}`),
+      await $fetch(`/api/products/find?sort=${params.value.sort}&page=${page.value}&type=${params.value?.type?.trim()}&name=${params.value?.name?.trim()}`),
       await $fetch('/api/categories')
     ])
     items.value = res1.data;

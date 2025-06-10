@@ -55,15 +55,15 @@
   <section class="container mx-auto my-8 pl-3">
     <h2 class="font-extrabold text-2xl text-ui-primary opacity-80 mb-9">Популярные категории</h2>
     <div class="flex flex-wrap md:flex-nowrap gap-5 items-center justify-center ">
-      <NuxtLink :to="`/products?sort=new&type=dog&name=`"
+      <NuxtLink :to="`/products?sort=new&type=5eecfe47-97a7-4ab1-92bd-1959aa1aa530&name=`"
         class="grid place-items-center bg-ui-primary rounded-xl w-full max-w-xs aspect-square">
         <img src="/dog.svg" alt="">
       </NuxtLink>
-      <NuxtLink :to="`/products?sort=new&type=cat&name=`"
+      <NuxtLink :to="`/products?sort=new&type=5a371eb6-262e-44b2-a378-2d1b4dec482c&name=`"
         class="grid place-items-center bg-ui-primary rounded-xl w-full max-w-xs aspect-square">
         <img src="/cat.svg" alt="">
       </NuxtLink>
-      <NuxtLink :to="`/products?sort=new&type=rat&name=`"
+      <NuxtLink :to="`/products?sort=new&type=09f92ba7-a464-426e-8a59-67071d3ffc4d&name=`"
         class="grid place-items-center bg-ui-primary rounded-xl w-full max-w-xs aspect-square">
         <img src="/hamster.svg" alt="">
       </NuxtLink>

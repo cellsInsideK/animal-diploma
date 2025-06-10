@@ -51,7 +51,7 @@ export const adoptionRequests = pgTable('adoptionRequests', {
 export type SelectAdoptionRequests = typeof adoptionRequests.$inferSelect;
 
 export const products = pgTable('products', {
-  id: integer('id').primaryKey().notNull(),
+  id: integer('id').primaryKey(),
   name: varchar('name').notNull(),
   price: integer('price').notNull(),
   quantity: integer('quantity').notNull(),
