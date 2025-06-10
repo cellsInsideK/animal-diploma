@@ -1,9 +1,10 @@
+import { eq } from "drizzle-orm";
 import { db } from "~/server/database/db"
-import { products } from "~/server/database/schema";
+import { category, products } from "~/server/database/schema";
 
 export default defineEventHandler(async () => {
   try {
-    const product = await db.query.products.findMany({orderBy: products.createdAt});
+    const product = await db.select().from(products).leftJoin(category,eq(category.id, products.type)).orderBy(products.createdAt);
     
     return {
       statusCode: 200,

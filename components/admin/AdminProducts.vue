@@ -1,14 +1,13 @@
-<script setup lang="ts">
+<script setup>
   import { toast } from 'vue-sonner';
-  import type { SelectProducts } from '~/server/database/schema';
   import CreateProduct from '../modals/CreateProduct.vue';
   import EditProductModal from '../modals/EditProductModal.vue';
 
   const isLoading = ref(true);
   const isCreateOpen = ref(false);
   const isOpen = ref(false);
-  const selectedProduct = ref<SelectProducts>({} as SelectProducts);
-  const products = ref<SelectProducts[]>([]);
+  const selectedProduct = ref({});
+  const products = ref([]);
 
   const getProducts = async () => {
     isLoading.value = true;
@@ -16,7 +15,7 @@
     isLoading.value = false;
 
     if (data.statusCode === 200) {
-      return products.value = data.data as SelectProducts[];
+      return products.value = data.data;
     }
 
     return toast.error('Ошибка', { description: data.message })
@@ -28,7 +27,7 @@
     isCreateOpen.value = true;
   }
 
-  const handleDeleteProduct = async (id: number) => {
+  const handleDeleteProduct = async (id) => {
     const res = await $fetch(`/api/products/${id}`, { method: 'DELETE' });
 
     if (res.statusCode !== 200) {
@@ -39,7 +38,7 @@
     return await getProducts();
   }
 
-  const handleEditProduct = (item: SelectProducts) => {
+  const handleEditProduct = (item) => {
     selectedProduct.value = item;
     isOpen.value = true;
   }
@@ -66,19 +65,20 @@
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow v-for="item in products" :key="item.id">
-          <TableCell>{{ item.name }}</TableCell>
-          <TableCell>{{ item.type }}</TableCell>
-          <TableCell>{{ item.price }}</TableCell>
-          <TableCell>{{ item.quantity }}</TableCell>
-          <TableCell>{{ getLocaleDate(item.createdAt!) }}</TableCell>
-          <TableCell>{{ getLocaleDate(item.updatedAt!) }}</TableCell>
+        <TableRow v-for="item in products" :key="item.products.id">
+          <TableCell>{{ item.products.name }}</TableCell>
+          <TableCell>{{ item.category.name }}</TableCell>
+          <TableCell>{{ item.products.price }}</TableCell>
+          <TableCell>{{ item.products.quantity }}</TableCell>
+          <TableCell>{{ getLocaleDate(item.products.createdAt) }}</TableCell>
+          <TableCell>{{ getLocaleDate(item.products.updatedAt) }}</TableCell>
           <TableCell>
-            <img @click="handleDeleteProduct(item.id)" src="/delete.svg" alt="delete Product"
+            <img @click="handleDeleteProduct(item.products.id)" src="/delete.svg" alt="delete Product"
               class="cursor-pointer ml-4">
           </TableCell>
           <TableCell>
-            <img @click="handleEditProduct(item)" src="/edit.svg" alt="edit Product" class="cursor-pointer ml-4">
+            <img @click="handleEditProduct(item.products)" src="/edit.svg" alt="edit Product"
+              class="cursor-pointer ml-4">
           </TableCell>
         </TableRow>
       </TableBody>
